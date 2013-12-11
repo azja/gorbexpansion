@@ -54,10 +54,12 @@ void GElements::fill_matrix( double q, double g_0, gsl_matrix& matrix, Functor& 
 
 /************************************************************************************/
 void GElements::psi_matrix(double q, double g_0, gsl_matrix& matrix) {
-    fill_matrix(q,g_0,matrix,GElements::psi_ij);
+    auto matrix_elem = [&](double x, double y)->double{ return psi_ij(x,y);};
+    fill_matrix(q,g_0,matrix, matrix_elem);
 }
 
 /*************************************************************************************/
 void GElements::psih_matrix(double q, double g_0, gsl_matrix& matrix) {
-    fill_matrix(q,g_0,matrix,GElements::psih_ij);
+    auto matrix_elem = [&](double x, double y)->double{ return psih_ij(x,y);};
+    fill_matrix(q,g_0,matrix,matrix_elem);
 }
