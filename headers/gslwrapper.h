@@ -52,7 +52,7 @@ protected:
 	GslEigenSolver(gsl_matrix& matrix);
 	size_t _size;
 	gsl_matrix_view _input;
-	;
+
 	gsl_vector* _eval;
 	gsl_matrix* _evec;
 
