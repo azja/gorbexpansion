@@ -12,12 +12,10 @@ static const double  gpi = 3.14159265359;
 static const double  gsq_pi = pow(gpi, 0.5);
 
 
-static double psi_ij(double g_i, double g_j);
-static double psih_ij(double g_i, double g_j);
-
-
 class GElements {
 
+static double psi_ij(double g_i, double g_j);
+static double psih_ij(double g_i, double g_j);
 
 void calculate_g(double q, double g_0, gsl_vector& g_vector);
 void calculate_g(double q, double g_0, double* g_vector) ;

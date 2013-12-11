@@ -2,19 +2,15 @@
 
 
 
-double foo(double x, double y) {
-return 0;
-}
-
 
 /*************************************************************************************/
 
-double psi_ij(double g_i, double g_j) {
+double GElements::psi_ij(double g_i, double g_j) {
   return pow((2* g_i * g_j)/(g_i*g_i + g_j*g_j),1.5);
 }
 
 /*************************************************************************************/
-double psih_ij(double g_i, double g_j) {
+double GElements::psih_ij(double g_i, double g_j) {
 
 double mult = g_i * g_j;
 double sum =  g_i * g_i + g_j * g_j;
@@ -58,10 +54,10 @@ void GElements::fill_matrix( double q, double g_0, gsl_matrix& matrix, Functor& 
 
 /************************************************************************************/
 void GElements::psi_matrix(double q, double g_0, gsl_matrix& matrix) {
-    fill_matrix(q,g_0,matrix, psi_ij);
+    fill_matrix(q,g_0,matrix,GElements::psi_ij);
 }
 
 /*************************************************************************************/
 void GElements::psih_matrix(double q, double g_0, gsl_matrix& matrix) {
-    fill_matrix(q,g_0,matrix, psih_ij);
+    fill_matrix(q,g_0,matrix,GElements::psih_ij);
 }
