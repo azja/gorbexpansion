@@ -4,6 +4,7 @@
 #include <gsl/gsl_matrix.h>
 #include <math.h>
 #include <stdlib.h>
+#include <iostream>
 
 
 static const double  gexp1 = pow(2,2.5);

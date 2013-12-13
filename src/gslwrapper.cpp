@@ -12,8 +12,8 @@
 
 GslEigenSolver::GslEigenSolver(double* matrix, size_t size) {
      _size = size;
-	 _input
-	    = gsl_matrix_view_array (matrix, _size, _size);
+	 _input = gsl_matrix_alloc(_size, _size);
+     _input->data = matrix;
 	 _eval = gsl_vector_alloc (_size);
 	 _evec = gsl_matrix_alloc(_size, _size);
 
@@ -23,9 +23,9 @@ GslEigenSolver::GslEigenSolver(double* matrix, size_t size) {
 
 GslEigenSolver::GslEigenSolver(gsl_matrix& matrix) {
 
-	 _input
-	    = gsl_matrix_view_array ( matrix.data, matrix.size1, matrix.size2 );
-	 _size = matrix.size1;
+     _size = matrix.size1;
+	 _input = gsl_matrix_alloc(_size, _size);
+     _input->data = matrix.data;
 	 _eval = gsl_vector_alloc (_size);
 	 _evec = gsl_matrix_alloc(_size, _size);
 
@@ -33,13 +33,24 @@ GslEigenSolver::GslEigenSolver(gsl_matrix& matrix) {
 
 /************************************************************************/
 
-const gsl_matrix& GslEigenSolver::getEigenVectors() {
-	return *_evec;
+GslEigenSolver::GslEigenSolver(size_t size) {
+
+	 _size = size;
+	 _input = gsl_matrix_alloc(_size, _size);
+     _input->data = NULL;
+	 _eval = gsl_vector_alloc (_size);
+	 _evec = gsl_matrix_alloc(_size, _size);
+
 }
 
 /************************************************************************/
 
-const gsl_vector& GslEigenSolver::getEigenValues() {
+gsl_matrix& GslEigenSolver::getEigenVectors() {
+	return *_evec;
+}
+
+/************************************************************************/
+ gsl_vector& GslEigenSolver::getEigenValues() {
 	return *_eval;
 }
 
@@ -48,6 +59,7 @@ const gsl_vector& GslEigenSolver::getEigenValues() {
 GslEigenSolver :: ~GslEigenSolver() {
 	gsl_vector_free (_eval);
 	gsl_matrix_free (_evec);
+	gsl_matrix_free (_input);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -55,12 +67,37 @@ GslEigenSolver :: ~GslEigenSolver() {
 //////////////////////////////////////////////////////////////////////////
 
 void GslEigenRealSymmetricSolver::solve() {
-	gsl_eigen_symmv (&_input.matrix, _eval, _evec, _w);
+
+    if(_input->data == NULL) {
+      std::cerr<<"Data is null in void GslEigenRealSymmetricSolver::solve()"<<std::endl;
+      return;
+    }
+	gsl_eigen_symmv (_input, _eval, _evec, _w);
 	gsl_eigen_symmv_sort (_eval, _evec,
 	                        GSL_EIGEN_SORT_ABS_ASC);
 }
 
 /************************************************************************/
+
+void GslEigenRealSymmetricSolver::solve(double* matrix) {
+	_input->data = matrix;
+	gsl_eigen_symmv (_input, _eval, _evec, _w);
+	gsl_eigen_symmv_sort (_eval, _evec,
+	                        GSL_EIGEN_SORT_ABS_ASC);
+}
+
+/************************************************************************/
+
+
+void GslEigenRealSymmetricSolver::solve(gsl_matrix& matrix) {
+	_input->data= matrix.data;
+	gsl_eigen_symmv (_input, _eval, _evec, _w);
+	gsl_eigen_symmv_sort (_eval, _evec,
+	                        GSL_EIGEN_SORT_ABS_ASC);
+}
+
+/************************************************************************/
+
 
 GslEigenRealSymmetricSolver::~GslEigenRealSymmetricSolver() {
 	gsl_eigen_symmv_free(_w);

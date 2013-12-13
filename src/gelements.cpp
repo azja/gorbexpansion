@@ -21,16 +21,17 @@ return 03 * gexp1 * pow(mult,2.5)/(pow(sum, 2.5)) - gexp2 * pow(mult,1.5)/(gsq_p
 /*************************************************************************************/
 void GElements::calculate_g(double q, double g_0, gsl_vector& vector) {
 
- for(int i = -_size/2; i < _size/2; ++i) {
-  gsl_vector_set(&vector,i, pow(q,i) * g_0 );
+ for(int i = -_size/2; i <= _size/2; ++i) {
+   gsl_vector_set(&vector,i + _size/2, pow(q,i) * g_0 );
  }
+
 }
 
 /*************************************************************************************/
 void GElements::calculate_g(double q, double g_0, double* vector) {
 
- for(int i = -_size/2; i < _size/2; ++i) {
-  vector[i] =  pow(q,i) * g_0;
+ for(int i = -_size/2; i <= _size/2; ++i) {
+  vector[i + _size/2] =  pow(q,i) * g_0;
  }
 }
 
@@ -47,7 +48,7 @@ void GElements::fill_matrix( double q, double g_0, gsl_matrix& matrix, Functor& 
      gsl_matrix_set (&matrix, i, j, non_diag);
      gsl_matrix_set (&matrix, j, i, non_diag);
     }
-    gsl_matrix_set(&matrix, i, i, f(gsl_vector_get(_gVector,i), gsl_vector_get(_gVector, i)));
+   gsl_matrix_set(&matrix, i, i, f(gsl_vector_get(_gVector,i), gsl_vector_get(_gVector, i)));
    }
 
 }

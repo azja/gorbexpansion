@@ -50,8 +50,9 @@ class GslEigenSolver {
 protected:
 	GslEigenSolver(double* matrix, size_t size);
 	GslEigenSolver(gsl_matrix& matrix);
+	GslEigenSolver(size_t size);
 	size_t _size;
-	gsl_matrix_view _input;
+	gsl_matrix* _input;
 
 	gsl_vector* _eval;
 	gsl_matrix* _evec;
@@ -61,9 +62,11 @@ public:
 	void setMatrix();
 
 	virtual void solve() = 0;
+    virtual void solve(double* matrix) = 0;
+    virtual void solve(gsl_matrix& matrix) = 0;
 
-	const gsl_matrix& getEigenVectors();
-	const gsl_vector& getEigenValues();
+	gsl_matrix& getEigenVectors();
+	gsl_vector& getEigenValues();
 
 
 	virtual ~GslEigenSolver();
@@ -79,12 +82,21 @@ public:
 			GslEigenSolver(matrix, size) {
 		_w = gsl_eigen_symmv_alloc(_size);
 	}
+
 	GslEigenRealSymmetricSolver(gsl_matrix& matrix, size_t size) :
 			GslEigenSolver(matrix) {
 		_w = gsl_eigen_symmv_alloc(_size);
 	}
 
+	GslEigenRealSymmetricSolver(size_t size) :
+			GslEigenSolver(size) {
+		_w = gsl_eigen_symmv_alloc(_size);
+	}
+
+
 	void solve();
+	void solve(double* matrix);
+	void solve(gsl_matrix& matrix);
 
 	~GslEigenRealSymmetricSolver();
 
