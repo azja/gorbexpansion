@@ -10,18 +10,19 @@
 */
 
 #include "gslwrapper.h"
-#include <gsl/gsl_cblas.h>
+#include <gsl/gsl_blas.h>
 
-template <typename EigenSolver>
+template <typename SymmetricEigenSolver, typename NonSymmetricEigenSolver>
 class Geignslv {
 
 gsl_matrix* mA;
+gsl_matrix* mT;
 gsl_matrix* mD;
 gsl_vector* mS;
 gsl_matrix* mV;
 gsl_vector* mL;
 
-EigenSolver _solver;
+SymmetricEigenSolver _solver;
 
 const size_t _size;
 
@@ -35,7 +36,7 @@ void s_eigen(gsl_matrix& S) {
  for(size_t i = 0; i < _size; i++) {
    for( size_t j = 0; j < i; j++) {
     double v  = gsl_matrix_get(mD, i, j)/sqrt(gsl_vector_get(mS,j));
-    gsl_matrix_set(mD, i, j, v);
+    gsl_matrix_set(mA, i, j, v);
    }
  }
 
@@ -43,14 +44,24 @@ void s_eigen(gsl_matrix& S) {
 }
 
 void aha_eigen(gsl_matrix& H) {
+/*
+gsl_blas_dgemm (CblasRowMajor,
+               CblasNoTrans, CblasNoTrans,
+               1.0, H,  mA, 0.0, mT);
+
+gsl_blas_dgemm (CblasRowMajor,
+               CblasTrans, CblasNoTrans, 1.0, mA, mT,mD);
+*/
+ _solver.solve(*mD);
 
 }
 
 public:
 
-Geignslv( size_t size): _solver( EigenSolver(size) ), _size(size) {
+Geignslv( size_t size): _solver( SymmetricEigenSolver(size) ), _size(size) {
 
-	 mS = gsl_vector_alloc(_size);
+	 mA = gsl_matrix_alloc(_size, _size);
+     mT = gsl_matrix_alloc(_size, _size);
 	 mV = gsl_matrix_alloc(_size, _size);
 	 mL = gsl_vector_alloc (_size);
 
@@ -65,9 +76,11 @@ void solve( gsl_matrix& H, gsl_matrix& S) {
 
 ~Geignslv() {
 
-
+ gsl_matrix_free(mT);
+ gsl_matrix_free(mA);
  gsl_matrix_free(mV);
  gsl_vector_free(mL);
+
 }
 
 };
