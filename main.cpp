@@ -22,16 +22,26 @@ int main(void) {
 
 
 gsl_matrix *psi = gsl_matrix_alloc(N,N);
+gsl_matrix *psi_h = gsl_matrix_alloc(N,N);
 
 GElements gelem(N);
 
-gelem.psi_matrix(2.0, 1.0, *psi);
+gelem.psi_matrix(2.2092, 0.892, *psi);
+gelem.psih_matrix(2.2092, 0.892, *psi_h);
 
-//GslMatrixManip::show(*psi);
+//GslMatrixManip::show(*psi_h);
 
-GslEigenRealSymmetricSolver solver(*psi,N);
-solver.solve();
-GslMatrixManip::show(solver.getEigenValues());
+
+Geignslv<GslEigenRealSymmetricSolver> general_solver(N);
+
+general_solver.solve(*psi_h, *psi);
+GslMatrixManip::show(general_solver.getEigenValues());
+
+
+
+//GslEigenRealSymmetricSolver solver(*psi,N);
+//solver.solve();
+//GslMatrixManip::show(solver.getEigenValues());
 
 /*
 

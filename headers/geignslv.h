@@ -12,17 +12,17 @@
 #include "gslwrapper.h"
 #include <gsl/gsl_blas.h>
 
-template <typename SymmetricEigenSolver, typename NonSymmetricEigenSolver>
+template <typename EigenSolver>
 class Geignslv {
 
 gsl_matrix* mA;
 gsl_matrix* mT;
 gsl_matrix* mD;
 gsl_vector* mS;
-gsl_matrix* mV;
+gsl_matrix* mC;
 gsl_vector* mL;
 
-SymmetricEigenSolver _solver;
+EigenSolver _solver;
 
 const size_t _size;
 
@@ -34,7 +34,7 @@ void s_eigen(gsl_matrix& S) {
 
 
  for(size_t i = 0; i < _size; i++) {
-   for( size_t j = 0; j < i; j++) {
+   for( size_t j = 0; j < _size; j++) {
     double v  = gsl_matrix_get(mD, i, j)/sqrt(gsl_vector_get(mS,j));
     gsl_matrix_set(mA, i, j, v);
    }
@@ -44,32 +44,45 @@ void s_eigen(gsl_matrix& S) {
 }
 
 void aha_eigen(gsl_matrix& H) {
-/*
-gsl_blas_dgemm (CblasRowMajor,
-               CblasNoTrans, CblasNoTrans,
-               1.0, H,  mA, 0.0, mT);
 
-gsl_blas_dgemm (CblasRowMajor,
-               CblasTrans, CblasNoTrans, 1.0, mA, mT,mD);
-*/
+ gsl_blas_dgemm ( CblasNoTrans, CblasNoTrans, 1.0 , &H, mA, 0.0, mT); //NOTE: mD is now A^t*H*A
+ gsl_blas_dgemm ( CblasTrans, CblasNoTrans, 1.0 , mA, mT, 0.0, mD);
+
+
+ GslMatrixManip::show(*mD);
  _solver.solve(*mD);
 
 }
 
+void calc_c() {
+ //gsl_blas_dgemv ('N', 1.0, mA, _solver.getEigenValues(), 0.0, mL)
+}
+
 public:
 
-Geignslv( size_t size): _solver( SymmetricEigenSolver(size) ), _size(size) {
+const gsl_matrix& getEigenVectors() {
+ return _solver.getEigenVector();
+}
+
+const gsl_vector& getEigenValues()  {
+ return _solver.getEigenValues();
+}
+
+Geignslv( size_t size): _solver( EigenSolver(size) ), _size(size) {
 
 	 mA = gsl_matrix_alloc(_size, _size);
      mT = gsl_matrix_alloc(_size, _size);
-	 mV = gsl_matrix_alloc(_size, _size);
+	 mC = gsl_matrix_alloc(_size, _size);
 	 mL = gsl_vector_alloc (_size);
 
 }
 
 void solve( gsl_matrix& H, gsl_matrix& S) {
  s_eigen(S);
+ aha_eigen(H);
 }
+
+
 
 
 //void solve(const double * H, const double * S);
@@ -78,7 +91,7 @@ void solve( gsl_matrix& H, gsl_matrix& S) {
 
  gsl_matrix_free(mT);
  gsl_matrix_free(mA);
- gsl_matrix_free(mV);
+ gsl_matrix_free(mC);
  gsl_vector_free(mL);
 
 }

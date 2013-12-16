@@ -15,13 +15,14 @@ double GElements::psih_ij(double g_i, double g_j) {
 double mult = g_i * g_j;
 double sum =  g_i * g_i + g_j * g_j;
 
-return 03 * gexp1 * pow(mult,2.5)/(pow(sum, 2.5)) - gexp2 * pow(mult,1.5)/(gsq_pi * sum);
+return 3 * gexp1 * pow(mult,3.5)/(pow(sum, 2.5)) - gexp2 * pow(mult,1.5)/(gsq_pi * sum);
 }
 
 /*************************************************************************************/
 void GElements::calculate_g(double q, double g_0, gsl_vector& vector) {
 
  for(int i = -_size/2; i <= _size/2; ++i) {
+
    gsl_vector_set(&vector,i + _size/2, pow(q,i) * g_0 );
  }
 
