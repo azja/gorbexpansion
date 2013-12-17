@@ -99,4 +99,27 @@ void solve( gsl_matrix& H, gsl_matrix& S) {
 
 };
 
+/***********************************************************************************/
+
+
+template <typename  EigenSolver, int N = 0>
+class EigenValueProvider {
+
+const Geignslv<EigenSolver> _gsolver;
+const int _size;
+public:
+ EigenValueProvider(int size):_size(size), _gsolver(_size) {}
+
+ double operator()(const gsl_vector* vector, void* params) {
+
+  gsl_matrix* M = (gsl_matrix*)params;
+  _gsolver.solve( M[0], M[1] );
+  return get_gsl_vector(&_gsolver.getEigenValues(),N);
+
+ }
+
+
+};
+
+
 #endif /*GEIGNSLV_H_*/
