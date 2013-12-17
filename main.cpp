@@ -14,7 +14,7 @@
 #include "headers/gelements.h"
 
 
-#define N  3
+#define N  15
 
 int main(void) {
 	//puts("");
@@ -25,23 +25,24 @@ gsl_matrix *psi = gsl_matrix_alloc(N,N);
 gsl_matrix *psi_h = gsl_matrix_alloc(N,N);
 
 GElements gelem(N);
-
-gelem.psi_matrix(2.2092, 0.892, *psi);
-gelem.psih_matrix(2.2092, 0.892, *psi_h);
+Geignslv<GslEigenRealSymmetricSolver> general_solver(N);
+for(int i = 0; i < 1000; ++i) {
+gelem.psi_matrix(1.4928,3.9443, *psi);
+gelem.psih_matrix(1.4928, 3.9443, *psi_h);
 
 //GslMatrixManip::show(*psi_h);
 
-
-Geignslv<GslEigenRealSymmetricSolver> general_solver(N);
-
 general_solver.solve(*psi_h, *psi);
+
+}
+
 GslMatrixManip::show(general_solver.getEigenValues());
 
 
-
-//GslEigenRealSymmetricSolver solver(*psi,N);
-//solver.solve();
-//GslMatrixManip::show(solver.getEigenValues());
+/*
+GslEigenRealSymmetricSolver solver(N);
+solver.solve(*psi);
+GslMatrixManip::show(solver.getEigenValues());
 
 /*
 

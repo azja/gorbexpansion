@@ -12,11 +12,13 @@
 #include "gslwrapper.h"
 #include <gsl/gsl_blas.h>
 
+
 template <typename EigenSolver>
 class Geignslv {
 
 gsl_matrix* mA;
 gsl_matrix* mT;
+gsl_matrix* mAha;
 gsl_matrix* mD;
 gsl_vector* mS;
 gsl_matrix* mC;
@@ -45,12 +47,9 @@ void s_eigen(gsl_matrix& S) {
 
 void aha_eigen(gsl_matrix& H) {
 
- gsl_blas_dgemm ( CblasNoTrans, CblasNoTrans, 1.0 , &H, mA, 0.0, mT); //NOTE: mD is now A^t*H*A
- gsl_blas_dgemm ( CblasTrans, CblasNoTrans, 1.0 , mA, mT, 0.0, mD);
-
-
- GslMatrixManip::show(*mD);
- _solver.solve(*mD);
+ gsl_blas_dgemm ( CblasNoTrans, CblasNoTrans, 1.0 , &H, mA, 0.0, mT);
+ gsl_blas_dgemm ( CblasTrans, CblasNoTrans, 1.0 , mA, mT, 0.0, mAha);
+ _solver.solve(*mAha);
 
 }
 
@@ -71,7 +70,8 @@ const gsl_vector& getEigenValues()  {
 Geignslv( size_t size): _solver( EigenSolver(size) ), _size(size) {
 
 	 mA = gsl_matrix_alloc(_size, _size);
-     mT = gsl_matrix_alloc(_size, _size);
+         mT = gsl_matrix_alloc(_size, _size);
+         mAha = gsl_matrix_alloc(_size, _size);
 	 mC = gsl_matrix_alloc(_size, _size);
 	 mL = gsl_vector_alloc (_size);
 
@@ -92,6 +92,7 @@ void solve( gsl_matrix& H, gsl_matrix& S) {
  gsl_matrix_free(mT);
  gsl_matrix_free(mA);
  gsl_matrix_free(mC);
+ gsl_matrix_free(mAha);
  gsl_vector_free(mL);
 
 }

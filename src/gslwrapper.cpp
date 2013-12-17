@@ -12,6 +12,7 @@
 
 GslEigenSolver::GslEigenSolver(double* matrix, size_t size) {
      _size = size;
+std::cout<<"Size is = "<<size<<std::endl;
 	 _input = gsl_matrix_alloc(_size, _size);
      _input->data = matrix;
 	 _eval = gsl_vector_alloc (_size);
@@ -74,7 +75,7 @@ void GslEigenRealSymmetricSolver::solve() {
     }
 	gsl_eigen_symmv (_input, _eval, _evec, _w);
 	gsl_eigen_symmv_sort (_eval, _evec,
-	                        GSL_EIGEN_SORT_ABS_ASC);
+	                        GSL_EIGEN_SORT_VAL_ASC);
 }
 
 /************************************************************************/
@@ -83,17 +84,17 @@ void GslEigenRealSymmetricSolver::solve(double* matrix) {
 	_input->data = matrix;
 	gsl_eigen_symmv (_input, _eval, _evec, _w);
 	gsl_eigen_symmv_sort (_eval, _evec,
-	                        GSL_EIGEN_SORT_ABS_ASC);
+	                        GSL_EIGEN_SORT_VAL_ASC);
 }
 
 /************************************************************************/
 
 
 void GslEigenRealSymmetricSolver::solve(gsl_matrix& matrix) {
-	_input->data= matrix.data;
-	gsl_eigen_symmv (_input, _eval, _evec, _w);
+
+	gsl_eigen_symmv (&matrix, _eval, _evec, _w);
 	gsl_eigen_symmv_sort (_eval, _evec,
-	                        GSL_EIGEN_SORT_ABS_ASC);
+	                        GSL_EIGEN_SORT_VAL_ASC);
 }
 
 /************************************************************************/

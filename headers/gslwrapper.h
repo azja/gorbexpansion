@@ -25,7 +25,7 @@ static void show(const gsl_matrix& matrix) {
 for (size_t i = 0; i < matrix.size1; ++i)
       {
         for(size_t j = 0; j < matrix.size2; ++j)
-         std::cout<<matrix.data[i * matrix.size1 + j]<<" ";
+         std::cout<<gsl_matrix_get(&matrix, i, j)<<" ";
         std::cout<<std::endl;
       }
 
@@ -35,7 +35,7 @@ static void show(const gsl_vector& vector) {
 
 for (size_t i = 0; i < vector.size; ++i)
       {
-         std::cout<<vector.data[i * vector.stride]<<" ";
+         std::cout<<gsl_vector_get(&vector, i)<<" ";
       }
  std::cout<<std::endl;
 }
