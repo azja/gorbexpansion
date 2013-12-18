@@ -12,29 +12,24 @@
 #include "headers/gslwrapper.h"
 #include "headers/geignslv.h"
 #include "headers/gelements.h"
+#include "headers/gelements.h"
+
+#include "headers/gminimizer.h"
+#include <iostream>
 
 
-#define N  15
+#define N  51
+int main() {
 
-int main(void) {
-
-
-gsl_matrix *psi = gsl_matrix_alloc(N,N);
-gsl_matrix *psi_h = gsl_matrix_alloc(N,N);
-
-GElements gelem(N);
-Geignslv<GslEigenRealSymmetricSolver> general_solver(N);
-for(int i = 0; i < 1000; ++i) {
-gelem.psi_matrix(1.4928,3.9443, *psi);
-gelem.psih_matrix(1.4928, 3.9443, *psi_h);
-
-
-general_solver.solve(*psi_h, *psi);
-
+for(int i = 1, j = 0; i < N; i = 2*j + 1, j++) {
+std::cout<<"#Gaussian: "<<i<<" Result:       ";
+GMinimizer minimizer(i);
+minimizer.solve(i, 2.0, 2.0);
 }
-
-GslMatrixManip::show(general_solver.getEigenValues());
 
 
 	return EXIT_SUCCESS;
 }
+
+
+
