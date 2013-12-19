@@ -68,7 +68,7 @@ public:
         return _solver.getEigenValues();
     }
 
-    Geignslv( size_t size): _solver( EigenSolver(size) ), _size(size) {
+    Geignslv( size_t size): _solver(size), _size(size) {
 
         mA = gsl_matrix_alloc(_size, _size);
         mT = gsl_matrix_alloc(_size, _size);
@@ -77,6 +77,9 @@ public:
         mL = gsl_vector_alloc (_size);
 
     }
+
+    Geignslv(const Geignslv&) = delete;
+    Geignslv& operator=(const Geignslv&) = delete;
 
     void solve( gsl_matrix& H, gsl_matrix& S) {
         s_eigen(S);

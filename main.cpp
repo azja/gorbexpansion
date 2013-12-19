@@ -17,7 +17,7 @@
 #include <iostream>
 
 
-#define N  21
+#define N  51
 
 int main() {
 

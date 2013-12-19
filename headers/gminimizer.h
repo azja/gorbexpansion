@@ -21,6 +21,8 @@ class GMinimizer {
 
     static double trialEigen( const gsl_vector* vector, void* params);
 
+
+
 public:
 
     GMinimizer(int size) :_size(size), gelem(size), general_solver(size) {
@@ -30,6 +32,9 @@ public:
         scalar_results = gsl_vector_alloc( 3 ); //q, g_0, E_0
 
     }
+
+    GMinimizer(const GMinimizer&) = delete;
+    GMinimizer& operator=(const GMinimizer&) = delete;
 
     const gsl_vector& solve( double q, double gamma_0, double eps = 1.0e-6, double dq = 0.001, double dg = 0.001);
 

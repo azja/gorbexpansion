@@ -40,6 +40,10 @@ struct GslMatrixManip {
         std::cout<<std::endl;
     }
 
+private:
+
+
+
 };
 
 
@@ -57,7 +61,9 @@ protected:
     gsl_vector* _eval;
     gsl_matrix* _evec;
 
+
 public:
+
 
     void setMatrix();
 
@@ -78,6 +84,7 @@ class GslEigenRealSymmetricSolver: public GslEigenSolver {
     gsl_eigen_symmv_workspace* _w;
 
 public:
+
     GslEigenRealSymmetricSolver(double* matrix, size_t size) :
         GslEigenSolver(matrix, size) {
         _w = gsl_eigen_symmv_alloc(_size);
@@ -94,11 +101,15 @@ public:
     }
 
 
-    void solve();
-    void solve(double* matrix);
-    void solve(gsl_matrix& matrix);
+     GslEigenRealSymmetricSolver(const GslEigenRealSymmetricSolver&) = delete;
+     GslEigenRealSymmetricSolver& operator=(const GslEigenRealSymmetricSolver&) = delete;
 
-    ~GslEigenRealSymmetricSolver();
+
+     void solve();
+     void solve(double* matrix);
+     void solve(gsl_matrix& matrix);
+
+     ~GslEigenRealSymmetricSolver();
 
 };
 

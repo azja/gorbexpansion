@@ -29,6 +29,9 @@ class GElements {
 
 public:
 
+    GElements(const GElements&) = delete;
+    GElements& operator=(const GElements&) = delete;
+
     void psi_matrix(double q, double g_0, gsl_matrix& matrix);
     void psih_matrix(double q, double g_0, gsl_matrix& matrix);
 
