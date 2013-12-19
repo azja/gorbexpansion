@@ -15,30 +15,30 @@ static const double  gsq_pi = pow(gpi, 0.5);
 
 class GElements {
 
-double psi_ij(double g_i, double g_j);
-double psih_ij(double g_i, double g_j);
+    double psi_ij(double g_i, double g_j);
+    double psih_ij(double g_i, double g_j);
 
-void calculate_g(double q, double g_0, gsl_vector& g_vector);
-void calculate_g(double q, double g_0, double* g_vector) ;
+    void calculate_g(double q, double g_0, gsl_vector& g_vector);
+    void calculate_g(double q, double g_0, double* g_vector) ;
 
-template <typename Functor>
-void fill_matrix(double q, double g_0, gsl_matrix& matrix,Functor& f);
+    template <typename Functor>
+    void fill_matrix(double q, double g_0, gsl_matrix& matrix,Functor& f);
 
-const int _size;
-gsl_vector* _gVector;
+    const int _size;
+    gsl_vector* _gVector;
 
 public:
 
-void psi_matrix(double q, double g_0, gsl_matrix& matrix);
-void psih_matrix(double q, double g_0, gsl_matrix& matrix);
+    void psi_matrix(double q, double g_0, gsl_matrix& matrix);
+    void psih_matrix(double q, double g_0, gsl_matrix& matrix);
 
-GElements(int size) : _size(size){
-  _gVector = gsl_vector_alloc (_size);
-}
+    GElements(int size) : _size(size) {
+        _gVector = gsl_vector_alloc (_size);
+    }
 
-~GElements() {
- gsl_vector_free( _gVector );
-}
+    ~GElements() {
+        gsl_vector_free( _gVector );
+    }
 
 };
 #endif /*GELEMENTS_H_*/

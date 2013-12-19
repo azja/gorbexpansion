@@ -11,31 +11,33 @@
 class GMinimizer {
 
 
- gsl_matrix *psi;
- gsl_matrix *psi_h;
- gsl_multimin_function *my_func;
+    gsl_matrix *psi;
+    gsl_matrix *psi_h;
+    gsl_multimin_function *my_func;
+    gsl_vector *scalar_results;
+    int _size;
+    GElements gelem;
+    Geignslv<GslEigenRealSymmetricSolver> general_solver;
 
- int _size;
- GElements gelem;
- Geignslv<GslEigenRealSymmetricSolver> general_solver;
-
-static double trialEigen( const gsl_vector* vector, void* params);
+    static double trialEigen( const gsl_vector* vector, void* params);
 
 public:
 
- GMinimizer(int size) :_size(size), gelem(size), general_solver(size) {
+    GMinimizer(int size) :_size(size), gelem(size), general_solver(size) {
 
- psi = gsl_matrix_alloc(size,size);
- psi_h = gsl_matrix_alloc(size,size);
+        psi = gsl_matrix_alloc(size,size);
+        psi_h = gsl_matrix_alloc(size,size);
+        scalar_results = gsl_vector_alloc( 3 ); //q, g_0, E_0
 
- }
+    }
 
-double  solve(int n, double q, double gamma_0);
+    const gsl_vector& solve( double q, double gamma_0, double eps = 1.0e-6, double dq = 0.001, double dg = 0.001);
 
-virtual ~GMinimizer() {
- gsl_matrix_free(psi);
- gsl_matrix_free(psi_h);
-}
+    virtual ~GMinimizer() {
+        gsl_matrix_free(psi);
+        gsl_matrix_free(psi_h);
+        gsl_vector_free(scalar_results);
+    }
 
 };
 
