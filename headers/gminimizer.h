@@ -23,7 +23,10 @@ class GMinimizer {
 
 
 
+
 public:
+
+
 
     GMinimizer(int size) :_size(size), gelem(size), general_solver(size) {
 
@@ -33,8 +36,12 @@ public:
 
     }
 
+
+
     GMinimizer(const GMinimizer&) = delete;
     GMinimizer& operator=(const GMinimizer&) = delete;
+
+
 
     const gsl_vector& solve( double q, double gamma_0, double eps = 1.0e-6, double dq = 0.001, double dg = 0.001);
 
@@ -49,4 +56,4 @@ public:
 
 
 #endif // GMINIMIZER_H_INCLUDED
-/***********************************************************************************/
+

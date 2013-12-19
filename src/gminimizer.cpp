@@ -12,7 +12,7 @@ double GMinimizer :: trialEigen( const gsl_vector* vector, void* params) {
 }
 
 
-
+/*************************************************************************************/
 
 const gsl_vector& GMinimizer::solve( double q, double gamma_0, double eps , double dq, double dg ) {
 
@@ -45,17 +45,12 @@ const gsl_vector& GMinimizer::solve( double q, double gamma_0, double eps , doub
     }
     while ( d > eps);
 
-//  std::cout<<"q = "<<gsl_vector_get(gsl_multimin_fminimizer_x (s),0)<< " g_0 = "<<gsl_vector_get(gsl_multimin_fminimizer_x (s),1)<<" E_0 ="<<gsl_multimin_fminimizer_minimum (s)<<std::endl;
-
     gsl_vector_set(scalar_results, 0, gsl_vector_get(gsl_multimin_fminimizer_x (s),0)); //q is set
     gsl_vector_set(scalar_results, 1, gsl_vector_get(gsl_multimin_fminimizer_x (s),1)); //g0 is set
     gsl_vector_set(scalar_results, 2, gsl_multimin_fminimizer_minimum (s)); //q is set
     gsl_multimin_fminimizer_free (s);
     gsl_vector_free (initial_guess);
     gsl_vector_free (initial_step);
-
-
-
 
     return *scalar_results;
 }

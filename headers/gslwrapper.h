@@ -14,7 +14,7 @@
 
 
 /*
- * Theses classes hide implementations of annoying gsl initialization
+ * These classes hide implementations of annoying gsl initialization
  * they are not responsible for handling with matrices (allocation, handling etc.)
  */
 
@@ -40,24 +40,19 @@ struct GslMatrixManip {
         std::cout<<std::endl;
     }
 
-private:
-
-
-
 };
 
-
-
+/*************************************************************************************/
 
 class GslEigenSolver {
 
 protected:
+
     GslEigenSolver(double* matrix, size_t size);
     GslEigenSolver(gsl_matrix& matrix);
     GslEigenSolver(size_t size);
     size_t _size;
     gsl_matrix* _input;
-
     gsl_vector* _eval;
     gsl_matrix* _evec;
 
@@ -78,6 +73,8 @@ public:
     virtual ~GslEigenSolver();
 
 };
+
+/*************************************************************************************/
 
 class GslEigenRealSymmetricSolver: public GslEigenSolver {
 
@@ -101,15 +98,15 @@ public:
     }
 
 
-     GslEigenRealSymmetricSolver(const GslEigenRealSymmetricSolver&) = delete;
-     GslEigenRealSymmetricSolver& operator=(const GslEigenRealSymmetricSolver&) = delete;
+    GslEigenRealSymmetricSolver(const GslEigenRealSymmetricSolver&) = delete;
+    GslEigenRealSymmetricSolver& operator=(const GslEigenRealSymmetricSolver&) = delete;
 
 
-     void solve();
-     void solve(double* matrix);
-     void solve(gsl_matrix& matrix);
+    void solve();
+    void solve(double* matrix);
+    void solve(gsl_matrix& matrix);
 
-     ~GslEigenRealSymmetricSolver();
+    ~GslEigenRealSymmetricSolver();
 
 };
 

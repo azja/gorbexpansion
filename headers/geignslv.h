@@ -29,6 +29,8 @@ class Geignslv {
 
     const size_t _size;
 
+/*************************************************************************************/
+
     void s_eigen(gsl_matrix& S) {
 
         _solver.solve(S);
@@ -46,6 +48,8 @@ class Geignslv {
 
     }
 
+/*************************************************************************************/
+
     void aha_eigen(gsl_matrix& H) {
 
         gsl_blas_dgemm ( CblasNoTrans, CblasNoTrans, 1.0 , &H, mA, 0.0, mT);
@@ -54,19 +58,26 @@ class Geignslv {
 
     }
 
+/*************************************************************************************/
+
     void calc_c() {
-//gsl_blas_dgemv ('N', 1.0, mA, _solver.getEigenValues(), 0.0, mL)
+        //TO DO
     }
 
+/*************************************************************************************/
 public:
 
     const gsl_matrix& getEigenVectors() {
         return _solver.getEigenVector();
     }
 
+/*************************************************************************************/
+
     const gsl_vector& getEigenValues()  {
         return _solver.getEigenValues();
     }
+
+/*************************************************************************************/
 
     Geignslv( size_t size): _solver(size), _size(size) {
 
@@ -78,6 +89,8 @@ public:
 
     }
 
+/*************************************************************************************/
+
     Geignslv(const Geignslv&) = delete;
     Geignslv& operator=(const Geignslv&) = delete;
 
@@ -85,6 +98,8 @@ public:
         s_eigen(S);
         aha_eigen(H);
     }
+
+/*************************************************************************************/
 
     ~Geignslv() {
 
@@ -95,6 +110,8 @@ public:
         gsl_vector_free(mL);
 
     }
+
+
 
 };
 
