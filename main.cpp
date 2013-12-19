@@ -19,7 +19,7 @@
 
 #define N  21
 
-int main()
+int main() {
 
 double q = 2.0;
 double g0 = 2.0;
