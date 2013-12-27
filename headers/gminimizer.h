@@ -43,7 +43,7 @@ public:
 
 
 
-    const gsl_vector& solve( double q, double gamma_0, double eps = 1.0e-6, double dq = 0.001, double dg = 0.001);
+    const gsl_vector& solve( double q, double gamma_0, double eps = 1.0e-6, double dq = 0.001, double dg = 0.001,gsl_vector* output = NULL);
 
     virtual ~GMinimizer() {
         gsl_matrix_free(psi);

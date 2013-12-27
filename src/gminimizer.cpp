@@ -14,7 +14,7 @@ double GMinimizer :: trialEigen( const gsl_vector* vector, void* params) {
 
 /*************************************************************************************/
 
-const gsl_vector& GMinimizer::solve( double q, double gamma_0, double eps , double dq, double dg ) {
+const gsl_vector& GMinimizer::solve( double q, double gamma_0, double eps , double dq, double dg, gsl_vector* output) {
 
     gsl_multimin_fminimizer *s;
     const gsl_multimin_fminimizer_type *T;
@@ -52,5 +52,19 @@ const gsl_vector& GMinimizer::solve( double q, double gamma_0, double eps , doub
     gsl_vector_free (initial_guess);
     gsl_vector_free (initial_step);
 
+     if(output != NULL && output->size == (size_t)_size)
+     {
+         getEigenVector(scalar_results,output);
+     }
+
     return *scalar_results;
 }
+
+
+void GMinimizer::getEigenVector(const gsl_vector* vector, gsl_vector* eigen_vector) {
+  gelem.psi_matrix(gsl_vector_get(vector,0), gsl_vector_get(vector,1), *(psi));
+  gelem.psih_matrix(gsl_vector_get(vector,0), gsl_vector_get(vector,1), *(psi_h));
+  general_solver.solve(*(psi_h), *(psi));
+  general_solver.getMinEigenVector(*eigen_vector);
+}
+

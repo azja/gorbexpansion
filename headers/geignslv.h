@@ -25,6 +25,8 @@ class Geignslv {
     gsl_matrix* mC;
     gsl_vector* mL;
 
+    gsl_vector* m_eigen_min;
+
     EigenSolver _solver;
 
     const size_t _size;
@@ -68,7 +70,7 @@ class Geignslv {
 public:
 
     const gsl_matrix& getEigenVectors() {
-        return _solver.getEigenVector();
+        return _solver.getEigenVectors();
     }
 
 /*************************************************************************************/
@@ -78,6 +80,11 @@ public:
     }
 
 /*************************************************************************************/
+    void getMinEigenVector(gsl_vector& output){
+         gsl_matrix_get_col(m_eigen_min, &getEigenVectors(),0);
+         gsl_blas_dgemv (CblasNoTrans, 1.0, mA, m_eigen_min, 0.0, &output);
+    }
+/*************************************************************************************/
 
     Geignslv( size_t size): _solver(size), _size(size) {
 
@@ -86,6 +93,7 @@ public:
         mAha = gsl_matrix_alloc(_size, _size);
         mC = gsl_matrix_alloc(_size, _size);
         mL = gsl_vector_alloc (_size);
+        m_eigen_min = gsl_vector_alloc (_size);
 
     }
 
@@ -108,6 +116,7 @@ public:
         gsl_matrix_free(mC);
         gsl_matrix_free(mAha);
         gsl_vector_free(mL);
+        gsl_vector_free(m_eigen_min);
 
     }
 
