@@ -20,7 +20,7 @@ class GMinimizer {
     Geignslv<GslEigenRealSymmetricSolver> general_solver;
 
     static double trialEigen( const gsl_vector* vector, void* params);
-
+    void getEigenVector(const gsl_vector* parameters, gsl_vector* eigen_vector);
 
 
 
@@ -50,6 +50,7 @@ public:
         gsl_matrix_free(psi_h);
         gsl_vector_free(scalar_results);
     }
+
 
 };
 
