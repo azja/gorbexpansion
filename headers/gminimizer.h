@@ -33,7 +33,6 @@ public:
         psi = gsl_matrix_alloc(size,size);
         psi_h = gsl_matrix_alloc(size,size);
         scalar_results = gsl_vector_alloc( 3 ); //q, g_0, E_0
-
     }
 
 

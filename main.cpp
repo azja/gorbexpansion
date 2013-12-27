@@ -28,12 +28,14 @@ int main() {
 
         std::cout<<"#Gaussian: "<<i<<" Result:       ";
         GMinimizer minimizer(i);                  /*minimizer*/
-        const gsl_vector  *result =  &minimizer.solve(q, g0, 1.0e-6);
+        gsl_vector *eigen = gsl_vector_alloc(i);
+        const gsl_vector  *result =  &minimizer.solve(q, g0,0.000001,0.01, 0.01,  eigen);
 
         q = gsl_vector_get(result,0);
         g0 =gsl_vector_get(result, 1);
 
         std::cout<<"q = "<<q<< " g_0 = "<<g0<<" E_0 = "<<gsl_vector_get(result, 2)<<std::endl;
+        gsl_vector_free(eigen);
     }
 
     return EXIT_SUCCESS;

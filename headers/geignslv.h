@@ -94,7 +94,6 @@ public:
         mC = gsl_matrix_alloc(_size, _size);
         mL = gsl_vector_alloc (_size);
         m_eigen_min = gsl_vector_alloc (_size);
-
     }
 
 /*************************************************************************************/

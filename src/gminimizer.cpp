@@ -51,12 +51,11 @@ const gsl_vector& GMinimizer::solve( double q, double gamma_0, double eps , doub
     gsl_multimin_fminimizer_free (s);
     gsl_vector_free (initial_guess);
     gsl_vector_free (initial_step);
-
+    
      if(output != NULL && output->size == (size_t)_size)
      {
          getEigenVector(scalar_results,output);
      }
-
     return *scalar_results;
 }
 
