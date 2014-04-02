@@ -17,7 +17,7 @@
 #include <iostream>
 
 
-#define N  51
+#define N  19
 
 int main() {
 
@@ -33,6 +33,20 @@ int main() {
 
         q = gsl_vector_get(result,0);
         g0 =gsl_vector_get(result, 1);
+        
+        double r = 0.0;
+        double pref = 0;
+        double g =0;
+        for(int k = 0; k< i; ++k) {
+        //std::cout<<gsl_vector_get(eigen,k)<<" ";
+         r = gsl_vector_get(eigen,k);
+//         std::cout<<" v = "<< k - (i+1)/2 +1;
+         g = g0*pow(q,k - (i+1)/2 +1);
+         pref = pow(2*g*g/3.14159,0.75);
+         std::cout<<r<<"*"<<pref<<"*exp("<<-g*g<<"*x*x)+";
+        }
+        std::cout<<" sum ="<<r;
+        std::cout<<std::endl;
 
         std::cout<<"q = "<<q<< " g_0 = "<<g0<<" E_0 = "<<gsl_vector_get(result, 2)<<std::endl;
         gsl_vector_free(eigen);
